@@ -10,18 +10,25 @@ newtype Radius a = Radius a
 newtype LatLng a = LatLng (a, a)
 
 data Zone k a where
-    Point :: Eq a => LatLng a -> Zone CourseLine a
-    Line :: Eq a => Radius a -> LatLng a -> Zone Goal a
+    Point :: LatLng a -> Zone CourseLine a
+    Line :: Radius a -> LatLng a -> Zone Goal a
 
 separated :: AnyZone k => Zone k a -> Zone k a -> Bool
 separated (Point _) (Point _) = undefined
+
+-- NoCylWarning.hs:25:1: warning: [-Woverlapping-patterns]
+--     Pattern match has inaccessible right hand side
+--     In an equation for ‘separated’: separated x y@(Point _) = ...
+--    |
+-- 25 | separated x y@(Point _) = separated y x
+--    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 separated x y@(Point _) = separated y x
 
--- NoCylWarning.hs:26:1: warning: [-Woverlapping-patterns]
+-- NoCylWarning.hs:33:1: warning: [-Woverlapping-patterns]
 --     Pattern match is redundant
 --     In an equation for ‘separated’: separated (Point _) y = ...
 --    |
--- 26 | separated (Point _) y = undefined
+-- 33 | separated (Point _) y = undefined
 --    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 separated (Point _) y = undefined
 separated x y = undefined

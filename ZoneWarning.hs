@@ -14,9 +14,9 @@ newtype Radius a = Radius a
 newtype LatLng a = LatLng (a, a)
 
 data Zone k a where
-    Point :: Eq a => LatLng a -> Zone CourseLine a
-    Cylinder :: (Eq a, ZoneMaybeCylindrical k) => Radius a -> LatLng a -> Zone k a
-    Line :: Eq a => Radius a -> LatLng a -> Zone Goal a
+    Point :: LatLng a -> Zone CourseLine a
+    Cylinder :: ZoneMaybeCylindrical k => Radius a -> LatLng a -> Zone k a
+    Line :: Radius a -> LatLng a -> Zone Goal a
 
 separated :: AnyZone k => Zone k a -> Zone k a -> Bool
 separated (Point _) (Point _) = undefined
